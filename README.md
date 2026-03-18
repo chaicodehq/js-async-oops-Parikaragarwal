@@ -70,6 +70,7 @@ src/
 ### Step 2 — Read the story and rules
 
 Each file has a detailed JSDoc comment at the top that explains:
+
 - The **kahani** (story — a real Indian scenario)
 - The **rules** your function/class must follow
 - The **parameters** and **return values**
@@ -146,20 +147,20 @@ This re-runs tests every time you save a file — very handy while working.
 
 ## Challenges
 
-| #  | File | Kahani | Concept | Points |
-|----|------|--------|---------|--------|
-| 01 | `01-samosa-wala.js` | Ramu ka Samosa Cart | `this` keyword basics | 7 |
-| 02 | `02-lassi-stand.js` | Punjab ki Lassi Stand | Constructor functions & prototype | 7 |
-| 03 | `03-dabba-delivery.js` | Mumbai Dabba Delivery | ES6 Classes | 8 |
-| 04 | `04-cricket-academy.js` | Cricket Academy | Inheritance (extends, super) | 8 |
-| 05 | `05-haveli-mansion.js` | Purani Haveli Security | Encapsulation (private fields #) | 8 |
-| 06 | `06-chai-promise.js` | Tapri ki Chai Promise | Promise creation (resolve/reject) | 9 |
-| 07 | `07-zomato-delivery.js` | Zomato Delivery Pipeline | Promise chaining (.then/.catch) | 9 |
-| 08 | `08-irctc-booking.js` | IRCTC Train Booking | async/await | 9 |
-| 09 | `09-swiggy-batch.js` | Swiggy Batch Delivery | Promise.all, .race, .allSettled | 9 |
-| 10 | `10-paytm-retry.js` | Paytm Payment Retry | Error handling & custom errors | 9 |
-| 11 | `11-temple-queue.js` | Temple Darshan Queue | Static methods, getters, Symbol.iterator | 9 |
-| 12 | `12-startup-incubator.js` | Startup Incubator | Capstone: OOP + async + this | 9 |
+| #   | File                      | Kahani                   | Concept                                  | Points |
+| --- | ------------------------- | ------------------------ | ---------------------------------------- | ------ |
+| 01  | `01-samosa-wala.js`       | Ramu ka Samosa Cart      | `this` keyword basics                    | 7      |
+| 02  | `02-lassi-stand.js`       | Punjab ki Lassi Stand    | Constructor functions & prototype        | 7      |
+| 03  | `03-dabba-delivery.js`    | Mumbai Dabba Delivery    | ES6 Classes                              | 8      |
+| 04  | `04-cricket-academy.js`   | Cricket Academy          | Inheritance (extends, super)             | 8      |
+| 05  | `05-haveli-mansion.js`    | Purani Haveli Security   | Encapsulation (private fields #)         | 8      |
+| 06  | `06-chai-promise.js`      | Tapri ki Chai Promise    | Promise creation (resolve/reject)        | 9      |
+| 07  | `07-zomato-delivery.js`   | Zomato Delivery Pipeline | Promise chaining (.then/.catch)          | 9      |
+| 08  | `08-irctc-booking.js`     | IRCTC Train Booking      | async/await                              | 9      |
+| 09  | `09-swiggy-batch.js`      | Swiggy Batch Delivery    | Promise.all, .race, .allSettled          | 9      |
+| 10  | `10-paytm-retry.js`       | Paytm Payment Retry      | Error handling & custom errors           | 9      |
+| 11  | `11-temple-queue.js`      | Temple Darshan Queue     | Static methods, getters, Symbol.iterator | 9      |
+| 12  | `12-startup-incubator.js` | Startup Incubator        | Capstone: OOP + async + this             | 9      |
 
 ---
 
@@ -260,15 +261,15 @@ npm run test:win:watch
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| `npm test` shows "command not found" | Run `npm install` first |
-| All tests fail with `undefined` | You haven't written your solution yet — that's expected |
+| Problem                               | Solution                                                           |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| `npm test` shows "command not found"  | Run `npm install` first                                            |
+| All tests fail with `undefined`       | You haven't written your solution yet — that's expected            |
 | Tests say "expected X but received Y" | Your logic is close but not matching the rules — re-read the JSDoc |
-| `git push` is rejected | Run `git pull origin main` first, then push again |
-| Tests pass locally but fail on GitHub | Make sure you pushed all your changes (`git status` to check) |
-| `npm test` fails on Windows | Use `npm run test:win` instead |
-| Promise tests timeout | Make sure your promises resolve/reject — don't leave them hanging |
+| `git push` is rejected                | Run `git pull origin main` first, then push again                  |
+| Tests pass locally but fail on GitHub | Make sure you pushed all your changes (`git status` to check)      |
+| `npm test` fails on Windows           | Use `npm run test:win` instead                                     |
+| Promise tests timeout                 | Make sure your promises resolve/reject — don't leave them hanging  |
 
 ---
 
