@@ -72,16 +72,79 @@
  *   isLassiStand({});                       // => false
  */
 export function LassiStand(name, city) {
-  // Your code here
+  this.name = name;
+  this.city = city;
+  this.menu = [];
+  this.orders = [];
+  this._nextOrderId = 1;
+
+  return this;
 }
 
-// Add prototype methods here:
-// LassiStand.prototype.addFlavor = function(flavor, price) { ... }
-// LassiStand.prototype.takeOrder = function(customerName, flavor, quantity) { ... }
-// LassiStand.prototype.completeOrder = function(orderId) { ... }
-// LassiStand.prototype.getRevenue = function() { ... }
-// LassiStand.prototype.getMenu = function() { ... }
+// Adding prototype methods here:
+LassiStand.prototype.addFlavor = function (flavor, price) {
+  if (price <= 0) {
+    return -1;
+  }
+  const alreadyExists = this.menu.find((menuItem) => {
+    return menuItem.flavor === flavor;
+  });
+
+  if (alreadyExists) {
+    return -1;
+  }
+
+  return this.menu.push({ flavor, price });
+};
+
+LassiStand.prototype.takeOrder = function (customerName, flavor, quantity) {
+  const flavorAvailable = this.menu.find((menuItem) => {
+    return menuItem.flavor === flavor;
+  });
+
+  if (quantity <= 0 || !flavorAvailable) {
+    return -1;
+  }
+
+  const flavorPrice = flavorAvailable.price;
+
+  this.orders.push({
+    id: this._nextOrderId++,
+    customer: customerName,
+    flavor,
+    quantity,
+    total: flavorPrice * quantity,
+    status: "pending",
+  });
+
+  return this._nextOrderId - 1;
+};
+
+LassiStand.prototype.completeOrder = function (orderId) {
+  const orderindex = this.orders.findIndex((orderInOrders) => 
+    orderInOrders.id === orderId
+  );
+
+  if (orderindex === -1 || this.orders[orderindex].status === "completed") {
+    return false;
+  }
+
+  this.orders[orderindex].status = "completed";
+
+  return true;
+};
+
+LassiStand.prototype.getRevenue = function () {
+  const revenue = this.orders
+    .filter((order) => order.status === "completed")
+    .reduce((sum, order) => sum + order.total, 0);
+
+  return revenue;
+};
+LassiStand.prototype.getMenu = function () {
+  return structuredClone(this.menu);
+};
 
 export function isLassiStand(obj) {
-  // Your code here
+  return obj instanceof LassiStand;
 }

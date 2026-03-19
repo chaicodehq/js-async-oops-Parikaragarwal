@@ -1,0 +1,2387 @@
+
+> js-async-oop-lab@1.0.0 test
+> NODE_OPTIONS=--experimental-vm-modules jest
+
+(node:1602898) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL tests/07-zomato-delivery.spec.js
+  07 - Zomato Delivery: Promise Chaining (9 pts)
+    placeOrder function
+      ✕ placeOrder resolves with order object for valid inputs (2 ms)
+      ✕ placeOrder rejects for empty restaurant name (3 ms)
+      ✕ placeOrder rejects for empty items array
+    confirmOrder function
+      ✕ confirmOrder changes status to confirmed and adds estimatedTime
+      ✕ confirmOrder rejects for order without placed status (1 ms)
+      ✕ confirmOrder rejects for order without orderId
+    assignRider function
+      ✕ assignRider sets status to assigned and adds rider
+      ✕ assignRider rejects if order is not confirmed
+    deliverOrder function
+      ✕ deliverOrder sets status to delivered with deliveredAt (1 ms)
+      ✕ deliverOrder rejects if no rider assigned (1 ms)
+    processDelivery full pipeline
+      ✕ processDelivery returns delivered order for valid inputs
+      ✕ processDelivery returns error object for invalid inputs
+    processMultipleOrders function
+      ✕ processMultipleOrders handles multiple valid orders
+      ✕ processMultipleOrders handles mixed valid/invalid orders
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › placeOrder function › placeOrder resolves with order object for valid inputs
+
+    TypeError: Cannot read properties of undefined (reading 'restaurant')
+
+      12 |     test('placeOrder resolves with order object for valid inputs', async () => {
+      13 |       const order = await placeOrder('Biryani House', ['biryani', 'raita']);
+    > 14 |       expect(order.restaurant).toBe('Biryani House');
+         |                    ^
+      15 |       expect(order.items).toEqual(['biryani', 'raita']);
+      16 |       expect(order.status).toBe('placed');
+      17 |       expect(order).toHaveProperty('orderId');
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:14:20)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › placeOrder function › placeOrder rejects for empty restaurant name
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      20 |
+      21 |     test('placeOrder rejects for empty restaurant name', async () => {
+    > 22 |       await expect(placeOrder('', ['biryani'])).rejects.toThrow('Invalid order details!');
+         |                                                         ^
+      23 |     });
+      24 |
+      25 |     test('placeOrder rejects for empty items array', async () => {
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:22:57)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › placeOrder function › placeOrder rejects for empty items array
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      24 |
+      25 |     test('placeOrder rejects for empty items array', async () => {
+    > 26 |       await expect(placeOrder('Biryani House', [])).rejects.toThrow('Invalid order details!');
+         |                                                             ^
+      27 |     });
+      28 |   });
+      29 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:26:61)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › confirmOrder function › confirmOrder changes status to confirmed and adds estimatedTime
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      32 |       const order = await placeOrder('Biryani House', ['biryani']);
+      33 |       const confirmed = await confirmOrder(order);
+    > 34 |       expect(confirmed.status).toBe('confirmed');
+         |                        ^
+      35 |       expect(confirmed.estimatedTime).toBe(30);
+      36 |     });
+      37 |
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:34:24)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › confirmOrder function › confirmOrder rejects for order without placed status
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      37 |
+      38 |     test('confirmOrder rejects for order without placed status', async () => {
+    > 39 |       await expect(confirmOrder({ orderId: 1, status: 'confirmed' })).rejects.toThrow(
+         |                                                                               ^
+      40 |         'Order cannot be confirmed!'
+      41 |       );
+      42 |     });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:39:79)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › confirmOrder function › confirmOrder rejects for order without orderId
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      43 |
+      44 |     test('confirmOrder rejects for order without orderId', async () => {
+    > 45 |       await expect(confirmOrder({ status: 'placed' })).rejects.toThrow(
+         |                                                                ^
+      46 |         'Order cannot be confirmed!'
+      47 |       );
+      48 |     });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:45:64)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › assignRider function › assignRider sets status to assigned and adds rider
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      54 |       const confirmed = await confirmOrder(order);
+      55 |       const assigned = await assignRider(confirmed);
+    > 56 |       expect(assigned.status).toBe('assigned');
+         |                       ^
+      57 |       expect(assigned).toHaveProperty('rider');
+      58 |       expect(['Rahul', 'Priya', 'Amit', 'Neha', 'Vikram']).toContain(assigned.rider);
+      59 |     });
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:56:23)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › assignRider function › assignRider rejects if order is not confirmed
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      60 |
+      61 |     test('assignRider rejects if order is not confirmed', async () => {
+    > 62 |       await expect(assignRider({ status: 'placed' })).rejects.toThrow('Order not confirmed yet!');
+         |                                                               ^
+      63 |     });
+      64 |   });
+      65 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:62:63)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › deliverOrder function › deliverOrder sets status to delivered with deliveredAt
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      70 |       const assigned = await assignRider(confirmed);
+      71 |       const delivered = await deliverOrder(assigned);
+    > 72 |       expect(delivered.status).toBe('delivered');
+         |                        ^
+      73 |       expect(delivered).toHaveProperty('deliveredAt');
+      74 |     });
+      75 |
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:72:24)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › deliverOrder function › deliverOrder rejects if no rider assigned
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      75 |
+      76 |     test('deliverOrder rejects if no rider assigned', async () => {
+    > 77 |       await expect(deliverOrder({ status: 'confirmed' })).rejects.toThrow('No rider assigned!');
+         |                                                                   ^
+      78 |     });
+      79 |   });
+      80 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:77:67)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › processDelivery full pipeline › processDelivery returns delivered order for valid inputs
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      82 |     test('processDelivery returns delivered order for valid inputs', async () => {
+      83 |       const result = await processDelivery('Pizza Palace', ['pizza']);
+    > 84 |       expect(result.status).toBe('delivered');
+         |                     ^
+      85 |       expect(result.restaurant).toBe('Pizza Palace');
+      86 |       expect(result).toHaveProperty('rider');
+      87 |       expect(result).toHaveProperty('deliveredAt');
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:84:21)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › processDelivery full pipeline › processDelivery returns error object for invalid inputs
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      90 |     test('processDelivery returns error object for invalid inputs', async () => {
+      91 |       const result = await processDelivery('', []);
+    > 92 |       expect(result.status).toBe('failed');
+         |                     ^
+      93 |       expect(result.error).toBe('Invalid order details!');
+      94 |     });
+      95 |   });
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:92:21)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › processMultipleOrders function › processMultipleOrders handles multiple valid orders
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      101 |         { restaurant: 'Pizza Place', items: ['pizza'] },
+      102 |       ]);
+    > 103 |       expect(results.length).toBe(2);
+          |                      ^
+      104 |       expect(results[0].status).toBe('fulfilled');
+      105 |       expect(results[0].value.status).toBe('delivered');
+      106 |     });
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:103:22)
+
+  ● 07 - Zomato Delivery: Promise Chaining (9 pts) › processMultipleOrders function › processMultipleOrders handles mixed valid/invalid orders
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      111 |         { restaurant: '', items: [] },
+      112 |       ]);
+    > 113 |       expect(results.length).toBe(2);
+          |                      ^
+      114 |       expect(results[0].status).toBe('fulfilled');
+      115 |       expect(results[1].status).toBe('fulfilled');
+      116 |       expect(results[1].value.status).toBe('failed');
+
+      at Object.<anonymous> (tests/07-zomato-delivery.spec.js:113:22)
+
+FAIL tests/11-temple-queue.spec.js
+  11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts)
+    Constructor and getters
+      ✕ TempleQueue initializes with templeName and empty queue (7 ms)
+      ✕ vipEnabled getter returns false by default (1 ms)
+    vipEnabled setter
+      ✕ vipEnabled setter accepts boolean values (1 ms)
+      ✕ vipEnabled setter throws TypeError for non-boolean (2 ms)
+    enqueue method
+      ✕ enqueue adds regular devotee to back of queue
+      ✕ enqueue adds VIP to front when vipEnabled is true (1 ms)
+      ✕ enqueue adds VIP to back when vipEnabled is false (1 ms)
+      ✕ enqueue returns null for invalid type (1 ms)
+      ✕ enqueue returns null for empty/falsy name (1 ms)
+      ✕ enqueue returns null when queue is full (1 ms)
+    dequeue and peek methods
+      ✕ dequeue removes and returns first devotee
+      ✕ dequeue returns null for empty queue (1 ms)
+      ✕ peek returns first devotee without removing
+      ✕ peek returns null for empty queue (1 ms)
+    contains and toArray methods
+      ✕ contains returns true for existing devotee (1 ms)
+      ✕ contains returns false for non-existent devotee (1 ms)
+      ✕ toArray returns a copy of the devotees array (1 ms)
+    Static methods
+      ✕ TempleQueue.fromArray creates queue from name array (1 ms)
+      ✕ TempleQueue.fromArray returns empty queue for non-array input
+      ✕ TempleQueue.merge combines two queues
+    Symbol.iterator
+      ✕ queue is iterable with for...of
+      ✕ iteration is non-destructive (1 ms)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Constructor and getters › TempleQueue initializes with templeName and empty queue
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "Kashi Vishwanath"
+    Received: undefined
+
+       5 |     test('TempleQueue initializes with templeName and empty queue', () => {
+       6 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    >  7 |       expect(queue.templeName).toBe('Kashi Vishwanath');
+         |                                ^
+       8 |       expect(queue.length).toBe(0);
+       9 |       expect(queue.isEmpty).toBe(true);
+      10 |     });
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:7:32)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Constructor and getters › vipEnabled getter returns false by default
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: undefined
+
+      12 |     test('vipEnabled getter returns false by default', () => {
+      13 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 14 |       expect(queue.vipEnabled).toBe(false);
+         |                                ^
+      15 |     });
+      16 |   });
+      17 |
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:14:32)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › vipEnabled setter › vipEnabled setter accepts boolean values
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: undefined
+
+      20 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+      21 |       queue.vipEnabled = true;
+    > 22 |       expect(queue.vipEnabled).toBe(true);
+         |                                ^
+      23 |       queue.vipEnabled = false;
+      24 |       expect(queue.vipEnabled).toBe(false);
+      25 |     });
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:22:32)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › vipEnabled setter › vipEnabled setter throws TypeError for non-boolean
+
+    expect(received).toThrow(expected)
+
+    Expected constructor: TypeError
+
+    Received function did not throw
+
+      27 |     test('vipEnabled setter throws TypeError for non-boolean', () => {
+      28 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 29 |       expect(() => { queue.vipEnabled = 'yes'; }).toThrow(TypeError);
+         |                                                   ^
+      30 |       expect(() => { queue.vipEnabled = 1; }).toThrow(TypeError);
+      31 |     });
+      32 |   });
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:29:51)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › enqueue method › enqueue adds regular devotee to back of queue
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+      36 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+      37 |       const devotee = queue.enqueue('Ram', 'regular');
+    > 38 |       expect(devotee.name).toBe('Ram');
+         |                      ^
+      39 |       expect(devotee.type).toBe('regular');
+      40 |       expect(devotee).toHaveProperty('joinedAt');
+      41 |       expect(queue.length).toBe(1);
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:38:22)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › enqueue method › enqueue adds VIP to front when vipEnabled is true
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+      48 |       queue.vipEnabled = true;
+      49 |       queue.enqueue('VIP Sharma', 'vip');
+    > 50 |       expect(queue.peek().name).toBe('VIP Sharma');
+         |                          ^
+      51 |     });
+      52 |
+      53 |     test('enqueue adds VIP to back when vipEnabled is false', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:50:26)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › enqueue method › enqueue adds VIP to back when vipEnabled is false
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+      55 |       queue.enqueue('Ram', 'regular');
+      56 |       queue.enqueue('VIP Sharma', 'vip');
+    > 57 |       expect(queue.peek().name).toBe('Ram');
+         |                          ^
+      58 |     });
+      59 |
+      60 |     test('enqueue returns null for invalid type', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:57:26)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › enqueue method › enqueue returns null for invalid type
+
+    expect(received).toBeNull()
+
+    Received: undefined
+
+      60 |     test('enqueue returns null for invalid type', () => {
+      61 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 62 |       expect(queue.enqueue('Ram', 'premium')).toBeNull();
+         |                                               ^
+      63 |     });
+      64 |
+      65 |     test('enqueue returns null for empty/falsy name', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:62:47)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › enqueue method › enqueue returns null for empty/falsy name
+
+    expect(received).toBeNull()
+
+    Received: undefined
+
+      65 |     test('enqueue returns null for empty/falsy name', () => {
+      66 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 67 |       expect(queue.enqueue('', 'regular')).toBeNull();
+         |                                            ^
+      68 |       expect(queue.enqueue(null, 'regular')).toBeNull();
+      69 |     });
+      70 |
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:67:44)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › enqueue method › enqueue returns null when queue is full
+
+    expect(received).toBeNull()
+
+    Received: undefined
+
+      73 |       queue.enqueue('Ram', 'regular');
+      74 |       queue.enqueue('Shyam', 'regular');
+    > 75 |       expect(queue.enqueue('Mohan', 'regular')).toBeNull();
+         |                                                 ^
+      76 |     });
+      77 |   });
+      78 |
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:75:49)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › dequeue and peek methods › dequeue removes and returns first devotee
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+      83 |       queue.enqueue('Shyam', 'regular');
+      84 |       const devotee = queue.dequeue();
+    > 85 |       expect(devotee.name).toBe('Ram');
+         |                      ^
+      86 |       expect(queue.length).toBe(1);
+      87 |     });
+      88 |
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:85:22)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › dequeue and peek methods › dequeue returns null for empty queue
+
+    expect(received).toBeNull()
+
+    Received: undefined
+
+      89 |     test('dequeue returns null for empty queue', () => {
+      90 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 91 |       expect(queue.dequeue()).toBeNull();
+         |                               ^
+      92 |     });
+      93 |
+      94 |     test('peek returns first devotee without removing', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:91:31)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › dequeue and peek methods › peek returns first devotee without removing
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+       95 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+       96 |       queue.enqueue('Ram', 'regular');
+    >  97 |       expect(queue.peek().name).toBe('Ram');
+          |                          ^
+       98 |       expect(queue.length).toBe(1);
+       99 |     });
+      100 |
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:97:26)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › dequeue and peek methods › peek returns null for empty queue
+
+    expect(received).toBeNull()
+
+    Received: undefined
+
+      101 |     test('peek returns null for empty queue', () => {
+      102 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 103 |       expect(queue.peek()).toBeNull();
+          |                            ^
+      104 |     });
+      105 |   });
+      106 |
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:103:28)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › contains and toArray methods › contains returns true for existing devotee
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: undefined
+
+      109 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+      110 |       queue.enqueue('Ram', 'regular');
+    > 111 |       expect(queue.contains('Ram')).toBe(true);
+          |                                     ^
+      112 |     });
+      113 |
+      114 |     test('contains returns false for non-existent devotee', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:111:37)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › contains and toArray methods › contains returns false for non-existent devotee
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: undefined
+
+      114 |     test('contains returns false for non-existent devotee', () => {
+      115 |       const queue = new TempleQueue('Kashi Vishwanath', 50);
+    > 116 |       expect(queue.contains('Ghost')).toBe(false);
+          |                                       ^
+      117 |     });
+      118 |
+      119 |     test('toArray returns a copy of the devotees array', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:116:39)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › contains and toArray methods › toArray returns a copy of the devotees array
+
+    TypeError: Cannot read properties of undefined (reading 'push')
+
+      121 |       queue.enqueue('Ram', 'regular');
+      122 |       const arr = queue.toArray();
+    > 123 |       arr.push({ name: 'Fake' });
+          |           ^
+      124 |       expect(queue.length).toBe(1);
+      125 |     });
+      126 |   });
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:123:11)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Static methods › TempleQueue.fromArray creates queue from name array
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      129 |     test('TempleQueue.fromArray creates queue from name array', () => {
+      130 |       const queue = TempleQueue.fromArray('Test Mandir', 10, ['A', 'B', 'C']);
+    > 131 |       expect(queue.length).toBe(3);
+          |                    ^
+      132 |       expect(queue.templeName).toBe('Test Mandir');
+      133 |       expect(queue.peek().name).toBe('A');
+      134 |       expect(queue.peek().type).toBe('regular');
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:131:20)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Static methods › TempleQueue.fromArray returns empty queue for non-array input
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      137 |     test('TempleQueue.fromArray returns empty queue for non-array input', () => {
+      138 |       const queue = TempleQueue.fromArray('Test Mandir', 10, 'not-array');
+    > 139 |       expect(queue.length).toBe(0);
+          |                    ^
+      140 |     });
+      141 |
+      142 |     test('TempleQueue.merge combines two queues', () => {
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:139:20)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Static methods › TempleQueue.merge combines two queues
+
+    TypeError: Cannot read properties of undefined (reading 'templeName')
+
+      147 |       q2.enqueue('C', 'regular');
+      148 |       const merged = TempleQueue.merge(q1, q2);
+    > 149 |       expect(merged.templeName).toBe('Mandir 1-Mandir 2');
+          |                     ^
+      150 |       expect(merged.length).toBe(3);
+      151 |     });
+      152 |   });
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:149:21)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Symbol.iterator › queue is iterable with for...of
+
+    TypeError: Result of the Symbol.iterator method is not an object
+
+      158 |       queue.enqueue('B', 'regular');
+      159 |       const names = [];
+    > 160 |       for (const devotee of queue) {
+          |                             ^
+      161 |         names.push(devotee.name);
+      162 |       }
+      163 |       expect(names).toEqual(['A', 'B']);
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:160:29)
+
+  ● 11 - Temple Queue: Static Methods, Getters/Setters, Symbol.iterator (9 pts) › Symbol.iterator › iteration is non-destructive
+
+    TypeError: Result of the Symbol.iterator method is not an object
+
+      168 |       queue.enqueue('A', 'regular');
+      169 |       queue.enqueue('B', 'regular');
+    > 170 |       const spread = [...queue];
+          |                          ^
+      171 |       expect(spread.length).toBe(2);
+      172 |       expect(queue.length).toBe(2);
+      173 |     });
+
+      at Object.<anonymous> (tests/11-temple-queue.spec.js:170:26)
+
+FAIL tests/12-startup-incubator.spec.js
+  12 - Startup Incubator: Capstone (9 pts)
+    Startup class
+      ✕ Startup constructor sets name, founder, domain and funding = 0 (7 ms)
+      ✕ Startup constructor throws for invalid domain (1 ms)
+      ✕ raiseFunding adds amount and returns new total (1 ms)
+      ✕ raiseFunding returns -1 for non-positive amount (1 ms)
+      ✕ getPitch returns correct formatted string using this (1 ms)
+    Incubator class - admitStartup
+      ✕ admitStartup admits valid startup (2 ms)
+      ✕ admitStartup rejects non-Startup instance (1 ms)
+      ✕ admitStartup rejects duplicate startup (1 ms)
+      ✕ admitStartup rejects when incubator is full
+    Incubator class - removeStartup and assignMentor
+      ✕ removeStartup removes startup by name (1 ms)
+      ✕ removeStartup returns false for non-existent startup (1 ms)
+      ✕ assignMentor assigns mentor to existing startup (2 ms)
+      ✕ assignMentor throws for non-existent startup
+    Incubator class - conductDemo
+      ✕ conductDemo returns demo result for admitted startup
+      ✕ conductDemo throws for non-existent startup
+    Incubator class - batchProcess
+      ✕ batchProcess admits multiple startups using allSettled (1 ms)
+      ✕ batchProcess handles mixed success/failure
+    Incubator class - getStartupsByDomain and getTopFunded
+      ✕ getStartupsByDomain filters by domain (1 ms)
+      ✕ getStartupsByDomain returns empty array for no matches (1 ms)
+      ✕ getTopFunded returns startups sorted by funding
+      ✕ getTopFunded returns empty array for n <= 0
+    Symbol.iterator and static createFromConfig
+      ✕ incubator is iterable with for...of yielding Startup instances
+      ✕ Incubator.createFromConfig creates incubator from config object
+      ✕ Incubator.createFromConfig throws for invalid config
+    runDemoDay standalone function
+      ✕ runDemoDay conducts demo for all startups
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Startup class › Startup constructor sets name, founder, domain and funding = 0
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "PayEasy"
+    Received: undefined
+
+       5 |     test('Startup constructor sets name, founder, domain and funding = 0', () => {
+       6 |       const s = new Startup('PayEasy', 'Rahul', 'fintech');
+    >  7 |       expect(s.name).toBe('PayEasy');
+         |                      ^
+       8 |       expect(s.founder).toBe('Rahul');
+       9 |       expect(s.domain).toBe('fintech');
+      10 |       expect(s.funding).toBe(0);
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:7:22)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Startup class › Startup constructor throws for invalid domain
+
+    expect(received).toThrow(expected)
+
+    Expected substring: "Invalid domain! Choose from: fintech, edtech, healthtech, foodtech"
+
+    Received function did not throw
+
+      13 |
+      14 |     test('Startup constructor throws for invalid domain', () => {
+    > 15 |       expect(() => new Startup('X', 'Y', 'crypto')).toThrow(
+         |                                                     ^
+      16 |         'Invalid domain! Choose from: fintech, edtech, healthtech, foodtech'
+      17 |       );
+      18 |     });
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:15:53)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Startup class › raiseFunding adds amount and returns new total
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 5000000
+    Received: undefined
+
+      20 |     test('raiseFunding adds amount and returns new total', () => {
+      21 |       const s = new Startup('PayEasy', 'Rahul', 'fintech');
+    > 22 |       expect(s.raiseFunding(5000000)).toBe(5000000);
+         |                                       ^
+      23 |       expect(s.raiseFunding(2000000)).toBe(7000000);
+      24 |     });
+      25 |
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:22:39)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Startup class › raiseFunding returns -1 for non-positive amount
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: -1
+    Received: undefined
+
+      26 |     test('raiseFunding returns -1 for non-positive amount', () => {
+      27 |       const s = new Startup('PayEasy', 'Rahul', 'fintech');
+    > 28 |       expect(s.raiseFunding(0)).toBe(-1);
+         |                                 ^
+      29 |       expect(s.raiseFunding(-100)).toBe(-1);
+      30 |     });
+      31 |
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:28:33)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Startup class › getPitch returns correct formatted string using this
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "PayEasy by Rahul | Domain: fintech | Funding: Rs.5000000"
+    Received: undefined
+
+      33 |       const s = new Startup('PayEasy', 'Rahul', 'fintech');
+      34 |       s.raiseFunding(5000000);
+    > 35 |       expect(s.getPitch()).toBe('PayEasy by Rahul | Domain: fintech | Funding: Rs.5000000');
+         |                            ^
+      36 |     });
+      37 |   });
+      38 |
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:35:28)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - admitStartup › admitStartup admits valid startup
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"message": "EduLearn admitted to T-Hub!", "success": true}
+    Received: undefined
+
+      42 |       const s = new Startup('EduLearn', 'Priya', 'edtech');
+      43 |       const result = await incubator.admitStartup(s);
+    > 44 |       expect(result).toEqual({ success: true, message: 'EduLearn admitted to T-Hub!' });
+         |                      ^
+      45 |     });
+      46 |
+      47 |     test('admitStartup rejects non-Startup instance', async () => {
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:44:22)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - admitStartup › admitStartup rejects non-Startup instance
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      47 |     test('admitStartup rejects non-Startup instance', async () => {
+      48 |       const incubator = new Incubator('T-Hub', 10);
+    > 49 |       await expect(incubator.admitStartup({ name: 'fake' })).rejects.toThrow('Invalid startup!');
+         |             ^
+      50 |     });
+      51 |
+      52 |     test('admitStartup rejects duplicate startup', async () => {
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:49:13)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - admitStartup › admitStartup rejects duplicate startup
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      54 |       const s = new Startup('EduLearn', 'Priya', 'edtech');
+      55 |       await incubator.admitStartup(s);
+    > 56 |       await expect(incubator.admitStartup(s)).rejects.toThrow('Startup already admitted!');
+         |             ^
+      57 |     });
+      58 |
+      59 |     test('admitStartup rejects when incubator is full', async () => {
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:56:13)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - admitStartup › admitStartup rejects when incubator is full
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      62 |       const s2 = new Startup('HealthFirst', 'Amit', 'healthtech');
+      63 |       await incubator.admitStartup(s1);
+    > 64 |       await expect(incubator.admitStartup(s2)).rejects.toThrow('Incubator full!');
+         |             ^
+      65 |     });
+      66 |   });
+      67 |
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:64:13)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - removeStartup and assignMentor › removeStartup removes startup by name
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: undefined
+
+      71 |       const s = new Startup('EduLearn', 'Priya', 'edtech');
+      72 |       await incubator.admitStartup(s);
+    > 73 |       expect(incubator.removeStartup('EduLearn')).toBe(true);
+         |                                                   ^
+      74 |     });
+      75 |
+      76 |     test('removeStartup returns false for non-existent startup', () => {
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:73:51)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - removeStartup and assignMentor › removeStartup returns false for non-existent startup
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: undefined
+
+      76 |     test('removeStartup returns false for non-existent startup', () => {
+      77 |       const incubator = new Incubator('T-Hub', 10);
+    > 78 |       expect(incubator.removeStartup('Ghost')).toBe(false);
+         |                                                ^
+      79 |     });
+      80 |
+      81 |     test('assignMentor assigns mentor to existing startup', async () => {
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:78:48)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - removeStartup and assignMentor › assignMentor assigns mentor to existing startup
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"message": "Guru assigned to EduLearn", "success": true}
+    Received: undefined
+
+      84 |       await incubator.admitStartup(s);
+      85 |       const result = await incubator.assignMentor('EduLearn', { name: 'Guru', expertise: 'tech' });
+    > 86 |       expect(result).toEqual({ success: true, message: 'Guru assigned to EduLearn' });
+         |                      ^
+      87 |     });
+      88 |
+      89 |     test('assignMentor throws for non-existent startup', async () => {
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:86:22)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - removeStartup and assignMentor › assignMentor throws for non-existent startup
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      89 |     test('assignMentor throws for non-existent startup', async () => {
+      90 |       const incubator = new Incubator('T-Hub', 10);
+    > 91 |       await expect(
+         |             ^
+      92 |         incubator.assignMentor('Ghost', { name: 'Guru', expertise: 'tech' })
+      93 |       ).rejects.toThrow('Startup not found!');
+      94 |     });
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:91:13)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - conductDemo › conductDemo returns demo result for admitted startup
+
+    TypeError: Cannot read properties of undefined (reading 'startup')
+
+      101 |       await incubator.admitStartup(s);
+      102 |       const result = await incubator.conductDemo('EduLearn');
+    > 103 |       expect(result.startup).toBe('EduLearn');
+          |                     ^
+      104 |       expect(result.score).toBeGreaterThanOrEqual(60);
+      105 |       expect(result.score).toBeLessThanOrEqual(100);
+      106 |       expect(result).toHaveProperty('feedback');
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:103:21)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - conductDemo › conductDemo throws for non-existent startup
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      110 |     test('conductDemo throws for non-existent startup', async () => {
+      111 |       const incubator = new Incubator('T-Hub', 10);
+    > 112 |       await expect(incubator.conductDemo('Ghost')).rejects.toThrow('Startup not found!');
+          |             ^
+      113 |     });
+      114 |   });
+      115 |
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:112:13)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - batchProcess › batchProcess admits multiple startups using allSettled
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      122 |       ];
+      123 |       const results = await incubator.batchProcess(startups);
+    > 124 |       expect(results.length).toBe(2);
+          |                      ^
+      125 |       expect(results[0].status).toBe('fulfilled');
+      126 |       expect(results[1].status).toBe('fulfilled');
+      127 |     });
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:124:22)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - batchProcess › batchProcess handles mixed success/failure
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      134 |       ];
+      135 |       const results = await incubator.batchProcess(startups);
+    > 136 |       expect(results.length).toBe(2);
+          |                      ^
+      137 |       expect(results[0].status).toBe('fulfilled');
+      138 |       expect(results[1].status).toBe('rejected');
+      139 |     });
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:136:22)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - getStartupsByDomain and getTopFunded › getStartupsByDomain filters by domain
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      150 |       await incubator.admitStartup(s3);
+      151 |       const fintechs = incubator.getStartupsByDomain('fintech');
+    > 152 |       expect(fintechs.length).toBe(2);
+          |                       ^
+      153 |       expect(fintechs[0].name).toBe('Pay1');
+      154 |     });
+      155 |
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:152:23)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - getStartupsByDomain and getTopFunded › getStartupsByDomain returns empty array for no matches
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: []
+    Received: undefined
+
+      156 |     test('getStartupsByDomain returns empty array for no matches', async () => {
+      157 |       const incubator = new Incubator('T-Hub', 10);
+    > 158 |       expect(incubator.getStartupsByDomain('fintech')).toEqual([]);
+          |                                                        ^
+      159 |     });
+      160 |
+      161 |     test('getTopFunded returns startups sorted by funding', async () => {
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:158:56)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - getStartupsByDomain and getTopFunded › getTopFunded returns startups sorted by funding
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      171 |       await incubator.admitStartup(s3);
+      172 |       const top2 = incubator.getTopFunded(2);
+    > 173 |       expect(top2.length).toBe(2);
+          |                   ^
+      174 |       expect(top2[0].name).toBe('Pay2');
+      175 |       expect(top2[1].name).toBe('Pay3');
+      176 |     });
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:173:19)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Incubator class - getStartupsByDomain and getTopFunded › getTopFunded returns empty array for n <= 0
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: []
+    Received: undefined
+
+      178 |     test('getTopFunded returns empty array for n <= 0', () => {
+      179 |       const incubator = new Incubator('T-Hub', 10);
+    > 180 |       expect(incubator.getTopFunded(0)).toEqual([]);
+          |                                         ^
+      181 |     });
+      182 |   });
+      183 |
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:180:41)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Symbol.iterator and static createFromConfig › incubator is iterable with for...of yielding Startup instances
+
+    TypeError: Result of the Symbol.iterator method is not an object
+
+      190 |       await incubator.admitStartup(s2);
+      191 |       const names = [];
+    > 192 |       for (const startup of incubator) {
+          |                             ^
+      193 |         names.push(startup.name);
+      194 |       }
+      195 |       expect(names).toEqual(['Pay1', 'Edu1']);
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:192:29)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Symbol.iterator and static createFromConfig › Incubator.createFromConfig creates incubator from config object
+
+    TypeError: Cannot read properties of undefined (reading 'name')
+
+      198 |     test('Incubator.createFromConfig creates incubator from config object', () => {
+      199 |       const incubator = Incubator.createFromConfig({ name: 'Nexus', maxStartups: 5 });
+    > 200 |       expect(incubator.name).toBe('Nexus');
+          |                        ^
+      201 |       expect(incubator.maxStartups).toBe(5);
+      202 |       expect(incubator instanceof Incubator).toBe(true);
+      203 |     });
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:200:24)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › Symbol.iterator and static createFromConfig › Incubator.createFromConfig throws for invalid config
+
+    expect(received).toThrow(expected)
+
+    Expected substring: "Invalid config!"
+
+    Received function did not throw
+
+      204 |
+      205 |     test('Incubator.createFromConfig throws for invalid config', () => {
+    > 206 |       expect(() => Incubator.createFromConfig({})).toThrow('Invalid config!');
+          |                                                    ^
+      207 |       expect(() => Incubator.createFromConfig({ name: 'X' })).toThrow('Invalid config!');
+      208 |     });
+      209 |   });
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:206:52)
+
+  ● 12 - Startup Incubator: Capstone (9 pts) › runDemoDay standalone function › runDemoDay conducts demo for all startups
+
+    TypeError: Cannot read properties of undefined (reading 'incubator')
+
+      217 |       await incubator.admitStartup(s2);
+      218 |       const result = await runDemoDay(incubator);
+    > 219 |       expect(result.incubator).toBe('T-Hub');
+          |                     ^
+      220 |       expect(result.totalStartups).toBe(2);
+      221 |       expect(result.results.length).toBe(2);
+      222 |       expect(result).toHaveProperty('timestamp');
+
+      at Object.<anonymous> (tests/12-startup-incubator.spec.js:219:21)
+
+FAIL tests/08-irctc-booking.spec.js
+  08 - IRCTC Booking: async/await (9 pts)
+    checkSeatAvailability function
+      ✕ returns availability object for valid inputs (2 ms)
+      ✕ throws for invalid train number (not 5 digits) (3 ms)
+      ✕ throws for invalid class type (1 ms)
+      ✕ throws for empty/missing date (1 ms)
+    bookTicket function
+      ✕ returns booking object with PNR for valid inputs (1 ms)
+      ✕ booking has correct fare based on class (1 ms)
+      ✕ booking status is confirmed or waitlisted
+    cancelTicket function
+      ✕ cancelTicket returns cancellation object for valid PNR (1 ms)
+      ✕ cancelTicket throws for invalid PNR
+    getBookingStatus function
+      ✕ getBookingStatus returns status for valid PNR
+      ✕ getBookingStatus throws for invalid PNR
+    bookMultipleTickets function
+      ✕ books tickets for multiple passengers sequentially
+      ✕ returns empty array for empty passengers (4 ms)
+    raceBooking function
+      ✕ raceBooking returns first successful booking
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › checkSeatAvailability function › returns availability object for valid inputs
+
+    TypeError: Cannot read properties of undefined (reading 'trainNumber')
+
+      12 |     test('returns availability object for valid inputs', async () => {
+      13 |       const result = await checkSeatAvailability('12345', '2025-01-15', '3A');
+    > 14 |       expect(result.trainNumber).toBe('12345');
+         |                     ^
+      15 |       expect(result.date).toBe('2025-01-15');
+      16 |       expect(result.classType).toBe('3A');
+      17 |       expect(typeof result.available).toBe('boolean');
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:14:21)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › checkSeatAvailability function › throws for invalid train number (not 5 digits)
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      21 |
+      22 |     test('throws for invalid train number (not 5 digits)', async () => {
+    > 23 |       await expect(checkSeatAvailability('123', '2025-01-15', '3A')).rejects.toThrow(
+         |             ^
+      24 |         'Invalid train number! 5 digit hona chahiye.'
+      25 |       );
+      26 |       await expect(checkSeatAvailability('123456', '2025-01-15', '3A')).rejects.toThrow(
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:23:13)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › checkSeatAvailability function › throws for invalid class type
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      30 |
+      31 |     test('throws for invalid class type', async () => {
+    > 32 |       await expect(checkSeatAvailability('12345', '2025-01-15', 'AC')).rejects.toThrow(
+         |             ^
+      33 |         'Invalid class type!'
+      34 |       );
+      35 |     });
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:32:13)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › checkSeatAvailability function › throws for empty/missing date
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      36 |
+      37 |     test('throws for empty/missing date', async () => {
+    > 38 |       await expect(checkSeatAvailability('12345', '', '3A')).rejects.toThrow('Date required hai!');
+         |             ^
+      39 |     });
+      40 |   });
+      41 |
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:38:13)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › bookTicket function › returns booking object with PNR for valid inputs
+
+    TypeError: Cannot read properties of undefined (reading 'pnr')
+
+      44 |       const passenger = { name: 'Rahul', age: 28, gender: 'M' };
+      45 |       const booking = await bookTicket(passenger, '12345', '2025-01-15', '3A');
+    > 46 |       expect(booking.pnr).toMatch(/^PNR/);
+         |                      ^
+      47 |       expect(booking.passenger).toEqual(passenger);
+      48 |       expect(booking.trainNumber).toBe('12345');
+      49 |       expect(booking.class).toBe('3A');
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:46:22)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › bookTicket function › booking has correct fare based on class
+
+    TypeError: Cannot read properties of undefined (reading 'fare')
+
+      56 |       for (const cls of ['SL', '3A', '2A', '1A']) {
+      57 |         const booking = await bookTicket(passenger, '12345', '2025-01-15', cls);
+    > 58 |         expect(booking.fare).toBe(fares[cls]);
+         |                        ^
+      59 |       }
+      60 |     });
+      61 |
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:58:24)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › bookTicket function › booking status is confirmed or waitlisted
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      63 |       const passenger = { name: 'Rahul', age: 28, gender: 'M' };
+      64 |       const booking = await bookTicket(passenger, '12345', '2025-01-15', 'SL');
+    > 65 |       if (booking.status === 'waitlisted') {
+         |                   ^
+      66 |         expect(booking.waitlistNumber).toBeGreaterThanOrEqual(1);
+      67 |         expect(booking.waitlistNumber).toBeLessThanOrEqual(20);
+      68 |       } else {
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:65:19)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › cancelTicket function › cancelTicket returns cancellation object for valid PNR
+
+    TypeError: Cannot read properties of undefined (reading 'pnr')
+
+      75 |     test('cancelTicket returns cancellation object for valid PNR', async () => {
+      76 |       const result = await cancelTicket('PNR123456');
+    > 77 |       expect(result.pnr).toBe('PNR123456');
+         |                     ^
+      78 |       expect(result.status).toBe('cancelled');
+      79 |       expect(result.refund).toBeGreaterThanOrEqual(100);
+      80 |       expect(result.refund).toBeLessThanOrEqual(1000);
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:77:21)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › cancelTicket function › cancelTicket throws for invalid PNR
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      82 |
+      83 |     test('cancelTicket throws for invalid PNR', async () => {
+    > 84 |       await expect(cancelTicket('INVALID')).rejects.toThrow('Invalid PNR number!');
+         |             ^
+      85 |       await expect(cancelTicket('')).rejects.toThrow('Invalid PNR number!');
+      86 |     });
+      87 |   });
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:84:13)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › getBookingStatus function › getBookingStatus returns status for valid PNR
+
+    TypeError: Cannot read properties of undefined (reading 'pnr')
+
+      90 |     test('getBookingStatus returns status for valid PNR', async () => {
+      91 |       const result = await getBookingStatus('PNR123456');
+    > 92 |       expect(result.pnr).toBe('PNR123456');
+         |                     ^
+      93 |       expect(['confirmed', 'waitlisted', 'cancelled']).toContain(result.status);
+      94 |       expect(result).toHaveProperty('lastUpdated');
+      95 |     });
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:92:21)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › getBookingStatus function › getBookingStatus throws for invalid PNR
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+       96 |
+       97 |     test('getBookingStatus throws for invalid PNR', async () => {
+    >  98 |       await expect(getBookingStatus('INVALID')).rejects.toThrow('Invalid PNR number!');
+          |             ^
+       99 |     });
+      100 |   });
+      101 |
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:98:13)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › bookMultipleTickets function › books tickets for multiple passengers sequentially
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      107 |       ];
+      108 |       const results = await bookMultipleTickets(passengers, '12345', '2025-01-15', 'SL');
+    > 109 |       expect(results.length).toBe(2);
+          |                      ^
+      110 |       expect(results[0].pnr).toMatch(/^PNR/);
+      111 |       expect(results[1].pnr).toMatch(/^PNR/);
+      112 |     });
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:109:22)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › bookMultipleTickets function › returns empty array for empty passengers
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: []
+    Received: undefined
+
+      114 |     test('returns empty array for empty passengers', async () => {
+      115 |       const results = await bookMultipleTickets([], '12345', '2025-01-15', 'SL');
+    > 116 |       expect(results).toEqual([]);
+          |                       ^
+      117 |     });
+      118 |   });
+      119 |
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:116:23)
+
+  ● 08 - IRCTC Booking: async/await (9 pts) › raceBooking function › raceBooking returns first successful booking
+
+    TypeError: Cannot read properties of undefined (reading 'pnr')
+
+      127 |         'SL'
+      128 |       );
+    > 129 |       expect(result.pnr).toMatch(/^PNR/);
+          |                     ^
+      130 |       expect(result.passenger).toEqual(passenger);
+      131 |     });
+      132 |   });
+
+      at Object.<anonymous> (tests/08-irctc-booking.spec.js:129:21)
+
+FAIL tests/06-chai-promise.spec.js
+  06 - Chai Promise: Promise Creation (9 pts)
+    orderChai function
+      ✕ orderChai resolves with correct object for valid order (5 ms)
+      ✕ orderChai resolves for all valid chai types (1 ms)
+      ✕ orderChai rejects for invalid chai type
+      ✕ orderChai rejects for quantity <= 0
+      ✕ orderChai rejects for non-number quantity (1 ms)
+    checkIngredients function
+      ✕ checkIngredients resolves for valid ingredient (1 ms)
+      ✕ checkIngredients resolves for all valid ingredients
+      ✕ checkIngredients rejects for unavailable ingredient (1 ms)
+    prepareChaiWithTimeout function
+      ✕ prepareChaiWithTimeout resolves when chai is ready before timeout (1 ms)
+      ✕ prepareChaiWithTimeout rejects when timeout fires first
+      ✕ prepareChaiWithTimeout rejects for invalid chai type even with long timeout
+    processChaiQueue function
+      ✕ processChaiQueue resolves with results for all orders
+      ✕ processChaiQueue handles mixed valid and invalid orders (1 ms)
+      ✕ processChaiQueue returns empty array for empty input
+      ✕ processChaiQueue handles all invalid orders
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › orderChai function › orderChai resolves with correct object for valid order
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"quantity": 2, "total": 50, "type": "masala"}
+    Received: undefined
+
+       5 |     test('orderChai resolves with correct object for valid order', async () => {
+       6 |       const result = await orderChai('masala', 2);
+    >  7 |       expect(result).toEqual({ type: 'masala', quantity: 2, total: 50 });
+         |                      ^
+       8 |     });
+       9 |
+      10 |     test('orderChai resolves for all valid chai types', async () => {
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:7:22)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › orderChai function › orderChai resolves for all valid chai types
+
+    TypeError: Cannot read properties of undefined (reading 'total')
+
+       9 |
+      10 |     test('orderChai resolves for all valid chai types', async () => {
+    > 11 |       expect((await orderChai('cutting', 1)).total).toBe(10);
+         |                                              ^
+      12 |       expect((await orderChai('special', 1)).total).toBe(20);
+      13 |       expect((await orderChai('ginger', 1)).total).toBe(15);
+      14 |       expect((await orderChai('masala', 1)).total).toBe(25);
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:11:46)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › orderChai function › orderChai rejects for invalid chai type
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      16 |
+      17 |     test('orderChai rejects for invalid chai type', async () => {
+    > 18 |       await expect(orderChai('green', 1)).rejects.toThrow('Yeh chai available nahi hai!');
+         |                                                   ^
+      19 |     });
+      20 |
+      21 |     test('orderChai rejects for quantity <= 0', async () => {
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:18:51)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › orderChai function › orderChai rejects for quantity <= 0
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      20 |
+      21 |     test('orderChai rejects for quantity <= 0', async () => {
+    > 22 |       await expect(orderChai('masala', 0)).rejects.toThrow('Kitni chai chahiye bhai?');
+         |                                                    ^
+      23 |       await expect(orderChai('masala', -1)).rejects.toThrow('Kitni chai chahiye bhai?');
+      24 |     });
+      25 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:22:52)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › orderChai function › orderChai rejects for non-number quantity
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      25 |
+      26 |     test('orderChai rejects for non-number quantity', async () => {
+    > 27 |       await expect(orderChai('masala', 'two')).rejects.toThrow('Kitni chai chahiye bhai?');
+         |                                                        ^
+      28 |     });
+      29 |   });
+      30 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:27:56)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › checkIngredients function › checkIngredients resolves for valid ingredient
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"available": true, "ingredient": "milk"}
+    Received: undefined
+
+      32 |     test('checkIngredients resolves for valid ingredient', async () => {
+      33 |       const result = await checkIngredients('milk');
+    > 34 |       expect(result).toEqual({ ingredient: 'milk', available: true });
+         |                      ^
+      35 |     });
+      36 |
+      37 |     test('checkIngredients resolves for all valid ingredients', async () => {
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:34:22)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › checkIngredients function › checkIngredients resolves for all valid ingredients
+
+    TypeError: Cannot read properties of undefined (reading 'available')
+
+      38 |       for (const ing of ['tea', 'milk', 'sugar', 'ginger', 'cardamom']) {
+      39 |         const result = await checkIngredients(ing);
+    > 40 |         expect(result.available).toBe(true);
+         |                       ^
+      41 |       }
+      42 |     });
+      43 |
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:40:23)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › checkIngredients function › checkIngredients rejects for unavailable ingredient
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      43 |
+      44 |     test('checkIngredients rejects for unavailable ingredient', async () => {
+    > 45 |       await expect(checkIngredients('saffron')).rejects.toThrow('saffron khatam ho gaya!');
+         |                                                         ^
+      46 |     });
+      47 |   });
+      48 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:45:57)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › prepareChaiWithTimeout function › prepareChaiWithTimeout resolves when chai is ready before timeout
+
+    TypeError: Cannot read properties of undefined (reading 'type')
+
+      50 |     test('prepareChaiWithTimeout resolves when chai is ready before timeout', async () => {
+      51 |       const result = await prepareChaiWithTimeout('masala', 500);
+    > 52 |       expect(result.type).toBe('masala');
+         |                     ^
+      53 |     });
+      54 |
+      55 |     test('prepareChaiWithTimeout rejects when timeout fires first', async () => {
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:52:21)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › prepareChaiWithTimeout function › prepareChaiWithTimeout rejects when timeout fires first
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      54 |
+      55 |     test('prepareChaiWithTimeout rejects when timeout fires first', async () => {
+    > 56 |       await expect(prepareChaiWithTimeout('masala', 10)).rejects.toThrow(
+         |                                                                  ^
+      57 |         'Bahut der ho gayi, chai nahi bani!'
+      58 |       );
+      59 |     });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:56:66)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › prepareChaiWithTimeout function › prepareChaiWithTimeout rejects for invalid chai type even with long timeout
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      60 |
+      61 |     test('prepareChaiWithTimeout rejects for invalid chai type even with long timeout', async () => {
+    > 62 |       await expect(prepareChaiWithTimeout('green', 5000)).rejects.toThrow(
+         |                                                                   ^
+      63 |         'Yeh chai available nahi hai!'
+      64 |       );
+      65 |     });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:62:67)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › processChaiQueue function › processChaiQueue resolves with results for all orders
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      72 |         { type: 'cutting', quantity: 2 },
+      73 |       ]);
+    > 74 |       expect(results.length).toBe(2);
+         |                      ^
+      75 |       expect(results[0].status).toBe('fulfilled');
+      76 |       expect(results[0].value).toEqual({ type: 'masala', quantity: 1, total: 25 });
+      77 |       expect(results[1].status).toBe('fulfilled');
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:74:22)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › processChaiQueue function › processChaiQueue handles mixed valid and invalid orders
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      84 |         { type: 'invalid', quantity: 2 },
+      85 |       ]);
+    > 86 |       expect(results.length).toBe(2);
+         |                      ^
+      87 |       expect(results[0].status).toBe('fulfilled');
+      88 |       expect(results[1].status).toBe('rejected');
+      89 |       expect(results[1].reason).toBe('Yeh chai available nahi hai!');
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:86:22)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › processChaiQueue function › processChaiQueue returns empty array for empty input
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: []
+    Received: undefined
+
+      92 |     test('processChaiQueue returns empty array for empty input', async () => {
+      93 |       const results = await processChaiQueue([]);
+    > 94 |       expect(results).toEqual([]);
+         |                       ^
+      95 |     });
+      96 |
+      97 |     test('processChaiQueue handles all invalid orders', async () => {
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:94:23)
+
+  ● 06 - Chai Promise: Promise Creation (9 pts) › processChaiQueue function › processChaiQueue handles all invalid orders
+
+    TypeError: Cannot read properties of undefined (reading 'every')
+
+      100 |         { type: 'invalid2', quantity: 1 },
+      101 |       ]);
+    > 102 |       expect(results.every(r => r.status === 'rejected')).toBe(true);
+          |                      ^
+      103 |     });
+      104 |   });
+      105 | });
+
+      at Object.<anonymous> (tests/06-chai-promise.spec.js:102:22)
+
+PASS tests/05-haveli-mansion.spec.js
+  05 - Haveli Mansion: Private Fields & Encapsulation (8 pts)
+    Constructor and public property
+      ✓ HaveliSecurity sets haveliName as public (3 ms)
+      ✓ private fields are not directly accessible (1 ms)
+    addResident method
+      ✓ addResident adds resident with correct passcode and valid role (2 ms)
+      ✓ addResident rejects wrong passcode
+      ✓ addResident rejects invalid role (1 ms)
+      ✓ addResident rejects duplicate resident (1 ms)
+      ✓ addResident rejects when haveli is full (1 ms)
+    removeResident method
+      ✓ removeResident removes resident with correct passcode (1 ms)
+      ✓ removeResident rejects wrong passcode
+      ✓ removeResident returns failure for non-existent resident
+    verifyAccess method
+      ✓ verifyAccess allows known resident (1 ms)
+      ✓ verifyAccess denies unknown person (1 ms)
+      ✓ verifyAccess logs each access attempt
+    getAccessLog method
+      ✓ getAccessLog returns copy of log with correct passcode
+      ✓ getAccessLog returns null for wrong passcode (1 ms)
+      ✓ getAccessLog returns a copy, not the original array
+    changePasscode method
+      ✓ changePasscode updates passcode successfully
+      ✓ changePasscode rejects wrong old passcode (1 ms)
+      ✓ changePasscode rejects short new passcode
+    getResidentCount and isResident
+      ✓ getResidentCount returns number of residents (1 ms)
+      ✓ isResident returns true for existing resident
+      ✓ isResident returns false for non-resident
+
+FAIL tests/09-swiggy-batch.spec.js
+  09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts)
+    prepareOrder function
+      ✕ prepareOrder resolves with prepared item object (6 ms)
+      ✕ prepareOrder rejects for empty item name (1 ms)
+      ✕ prepareOrder rejects for invalid prep time (1 ms)
+    prepareBatch function (Promise.all)
+      ✕ prepareBatch resolves with array of all prepared items (2 ms)
+      ✕ prepareBatch rejects if any item fails (1 ms)
+      ✕ prepareBatch resolves with empty array for empty input (1 ms)
+    getFirstReady function (Promise.race)
+      ✕ getFirstReady resolves with fastest item (1 ms)
+      ✕ getFirstReady rejects for empty items array (1 ms)
+    prepareSafeBatch function (Promise.allSettled)
+      ✕ prepareSafeBatch resolves with all results including failures
+      ✕ prepareSafeBatch never rejects (1 ms)
+      ✕ prepareSafeBatch resolves with empty array for empty input
+    deliverWithTimeout function
+      ✕ deliverWithTimeout resolves when order completes before timeout (1 ms)
+      ✕ deliverWithTimeout rejects when timeout fires first
+      ✕ deliverWithTimeout rejects for invalid timeout value (1 ms)
+    batchWithRetry function
+      ✕ batchWithRetry succeeds on first attempt for valid items
+      ✕ batchWithRetry throws after all retries fail (1 ms)
+      ✕ batchWithRetry with 0 retries means just one attempt (1 ms)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareOrder function › prepareOrder resolves with prepared item object
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"item": "Biryani", "prepTime": 100, "ready": true}
+    Received: undefined
+
+      12 |     test('prepareOrder resolves with prepared item object', async () => {
+      13 |       const result = await prepareOrder('Biryani', 100);
+    > 14 |       expect(result).toEqual({ item: 'Biryani', ready: true, prepTime: 100 });
+         |                      ^
+      15 |     });
+      16 |
+      17 |     test('prepareOrder rejects for empty item name', async () => {
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:14:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareOrder function › prepareOrder rejects for empty item name
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      16 |
+      17 |     test('prepareOrder rejects for empty item name', async () => {
+    > 18 |       await expect(prepareOrder('', 100)).rejects.toThrow('Item name required!');
+         |                                                   ^
+      19 |       await expect(prepareOrder(null, 100)).rejects.toThrow('Item name required!');
+      20 |       await expect(prepareOrder(undefined, 100)).rejects.toThrow('Item name required!');
+      21 |     });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:18:51)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareOrder function › prepareOrder rejects for invalid prep time
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      22 |
+      23 |     test('prepareOrder rejects for invalid prep time', async () => {
+    > 24 |       await expect(prepareOrder('Biryani', 0)).rejects.toThrow('Invalid prep time!');
+         |                                                        ^
+      25 |       await expect(prepareOrder('Biryani', -5)).rejects.toThrow('Invalid prep time!');
+      26 |       await expect(prepareOrder('Biryani', 'fast')).rejects.toThrow('Invalid prep time!');
+      27 |     });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:24:56)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareBatch function (Promise.all) › prepareBatch resolves with array of all prepared items
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: [{"item": "Dosa", "prepTime": 50, "ready": true}, {"item": "Idli", "prepTime": 30, "ready": true}]
+    Received: undefined
+
+      35 |       ];
+      36 |       const result = await prepareBatch(items);
+    > 37 |       expect(result).toEqual([
+         |                      ^
+      38 |         { item: 'Dosa', ready: true, prepTime: 50 },
+      39 |         { item: 'Idli', ready: true, prepTime: 30 },
+      40 |       ]);
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:37:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareBatch function (Promise.all) › prepareBatch rejects if any item fails
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      46 |         { name: '', prepTime: 30 },
+      47 |       ];
+    > 48 |       await expect(prepareBatch(items)).rejects.toThrow('Item name required!');
+         |                                                 ^
+      49 |     });
+      50 |
+      51 |     test('prepareBatch resolves with empty array for empty input', async () => {
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:48:49)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareBatch function (Promise.all) › prepareBatch resolves with empty array for empty input
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: []
+    Received: undefined
+
+      51 |     test('prepareBatch resolves with empty array for empty input', async () => {
+      52 |       const result = await prepareBatch([]);
+    > 53 |       expect(result).toEqual([]);
+         |                      ^
+      54 |     });
+      55 |   });
+      56 |
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:53:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › getFirstReady function (Promise.race) › getFirstReady resolves with fastest item
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"item": "Maggi", "prepTime": 50, "ready": true}
+    Received: undefined
+
+      62 |       ];
+      63 |       const result = await getFirstReady(items);
+    > 64 |       expect(result).toEqual({ item: 'Maggi', ready: true, prepTime: 50 });
+         |                      ^
+      65 |     });
+      66 |
+      67 |     test('getFirstReady rejects for empty items array', async () => {
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:64:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › getFirstReady function (Promise.race) › getFirstReady rejects for empty items array
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      66 |
+      67 |     test('getFirstReady rejects for empty items array', async () => {
+    > 68 |       await expect(getFirstReady([])).rejects.toThrow('No items to prepare!');
+         |                                               ^
+      69 |     });
+      70 |   });
+      71 |
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:68:47)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareSafeBatch function (Promise.allSettled) › prepareSafeBatch resolves with all results including failures
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      77 |       ];
+      78 |       const results = await prepareSafeBatch(items);
+    > 79 |       expect(results.length).toBe(2);
+         |                      ^
+      80 |       expect(results[0].status).toBe('fulfilled');
+      81 |       expect(results[0].value).toEqual({ item: 'Pizza', ready: true, prepTime: 50 });
+      82 |       expect(results[1].status).toBe('rejected');
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:79:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareSafeBatch function (Promise.allSettled) › prepareSafeBatch never rejects
+
+    TypeError: Cannot read properties of undefined (reading 'every')
+
+      90 |       ];
+      91 |       const results = await prepareSafeBatch(items);
+    > 92 |       expect(results.every(r => r.status === 'rejected')).toBe(true);
+         |                      ^
+      93 |     });
+      94 |
+      95 |     test('prepareSafeBatch resolves with empty array for empty input', async () => {
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:92:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › prepareSafeBatch function (Promise.allSettled) › prepareSafeBatch resolves with empty array for empty input
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: []
+    Received: undefined
+
+       95 |     test('prepareSafeBatch resolves with empty array for empty input', async () => {
+       96 |       const results = await prepareSafeBatch([]);
+    >  97 |       expect(results).toEqual([]);
+          |                       ^
+       98 |     });
+       99 |   });
+      100 |
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:97:23)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › deliverWithTimeout function › deliverWithTimeout resolves when order completes before timeout
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"item": "Biryani", "prepTime": 50, "ready": true}
+    Received: undefined
+
+      103 |       const orderPromise = prepareOrder('Biryani', 50);
+      104 |       const result = await deliverWithTimeout(orderPromise, 500);
+    > 105 |       expect(result).toEqual({ item: 'Biryani', ready: true, prepTime: 50 });
+          |                      ^
+      106 |     });
+      107 |
+      108 |     test('deliverWithTimeout rejects when timeout fires first', async () => {
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:105:22)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › deliverWithTimeout function › deliverWithTimeout rejects when timeout fires first
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      108 |     test('deliverWithTimeout rejects when timeout fires first', async () => {
+      109 |       const orderPromise = prepareOrder('Biryani', 500);
+    > 110 |       await expect(deliverWithTimeout(orderPromise, 10)).rejects.toThrow('Delivery timeout!');
+          |                                                                  ^
+      111 |     });
+      112 |
+      113 |     test('deliverWithTimeout rejects for invalid timeout value', async () => {
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:110:66)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › deliverWithTimeout function › deliverWithTimeout rejects for invalid timeout value
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      113 |     test('deliverWithTimeout rejects for invalid timeout value', async () => {
+      114 |       const orderPromise = prepareOrder('Biryani', 50);
+    > 115 |       await expect(deliverWithTimeout(orderPromise, 0)).rejects.toThrow('Invalid timeout!');
+          |                                                                 ^
+      116 |       await expect(deliverWithTimeout(orderPromise, -1)).rejects.toThrow('Invalid timeout!');
+      117 |     });
+      118 |   });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:115:65)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › batchWithRetry function › batchWithRetry succeeds on first attempt for valid items
+
+    TypeError: Cannot read properties of undefined (reading 'length')
+
+      125 |       ];
+      126 |       const result = await batchWithRetry(items, 2);
+    > 127 |       expect(result.length).toBe(2);
+          |                     ^
+      128 |     });
+      129 |
+      130 |     test('batchWithRetry throws after all retries fail', async () => {
+
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:127:21)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › batchWithRetry function › batchWithRetry throws after all retries fail
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      132 |         { name: '', prepTime: 50 },
+      133 |       ];
+    > 134 |       await expect(batchWithRetry(items, 2)).rejects.toThrow('Item name required!');
+          |                                                      ^
+      135 |     });
+      136 |
+      137 |     test('batchWithRetry with 0 retries means just one attempt', async () => {
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:134:54)
+
+  ● 09 - Swiggy Batch: Promise.all, Promise.race, Promise.allSettled (9 pts) › batchWithRetry function › batchWithRetry with 0 retries means just one attempt
+
+    expect(received).rejects.toThrow()
+
+    Matcher error: received value must be a promise or a function returning a promise
+
+    Received has value: undefined
+
+      139 |         { name: '', prepTime: 50 },
+      140 |       ];
+    > 141 |       await expect(batchWithRetry(items, 0)).rejects.toThrow('Item name required!');
+          |                                                      ^
+      142 |     });
+      143 |   });
+      144 | });
+
+      at Object.toThrow (node_modules/expect/build/index.js:204:13)
+      at Object.<anonymous> (tests/09-swiggy-batch.spec.js:141:54)
+
+FAIL tests/10-paytm-retry.spec.js
+  10 - Paytm Retry: Custom Errors & Retry Logic (9 pts)
+    Custom Error classes
+      ✕ PaymentError has correct name, code, and amount (1 ms)
+      ✕ InsufficientFundsError extends PaymentError correctly (1 ms)
+      ✕ NetworkError extends PaymentError with retryable = true
+      ✕ FraudDetectedError extends PaymentError with retryable = false (1 ms)
+    processPayment function
+      ✕ processPayment returns success for valid payment
+      ✕ processPayment throws PaymentError for invalid amount (6 ms)
+      ✕ processPayment throws InsufficientFundsError when amount > balance (1 ms)
+      ✕ processPayment throws NetworkError for offline status (1 ms)
+      ✕ processPayment throws FraudDetectedError for amount > 100000 (1 ms)
+    retryPayment function
+      ✕ retryPayment succeeds on first try
+      ✕ retryPayment retries on NetworkError
+      ✕ retryPayment does NOT retry on non-NetworkError (1 ms)
+      ✕ retryPayment throws after all retries exhausted (1 ms)
+    processWithFallback function
+      ✕ processWithFallback returns primary result on success
+      ✕ processWithFallback uses fallback when primary fails
+      ✕ processWithFallback throws PaymentError when both fail (1 ms)
+    categorizeError function
+      ✕ categorizes InsufficientFundsError correctly (1 ms)
+      ✕ categorizes NetworkError correctly (1 ms)
+      ✕ categorizes FraudDetectedError correctly
+      ✕ categorizes unknown errors correctly (1 ms)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › Custom Error classes › PaymentError has correct name, code, and amount
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      114 |  */
+      115 | export class PaymentError extends Error {
+    > 116 |   constructor(message, code, amount) {
+          |              ^
+      117 |     // Your code here
+      118 |   }
+      119 | }
+
+      at new PaymentError (src/10-paytm-retry.js:116:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:15:19)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › Custom Error classes › InsufficientFundsError extends PaymentError correctly
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      120 |
+      121 | export class InsufficientFundsError extends PaymentError {
+    > 122 |   constructor(amount, balance) {
+          |              ^
+      123 |     // Your code here
+      124 |   }
+      125 | }
+
+      at new InsufficientFundsError (src/10-paytm-retry.js:122:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:24:19)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › Custom Error classes › NetworkError extends PaymentError with retryable = true
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      126 |
+      127 | export class NetworkError extends PaymentError {
+    > 128 |   constructor(amount) {
+          |              ^
+      129 |     // Your code here
+      130 |   }
+      131 | }
+
+      at new NetworkError (src/10-paytm-retry.js:128:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:35:19)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › Custom Error classes › FraudDetectedError extends PaymentError with retryable = false
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      132 |
+      133 | export class FraudDetectedError extends PaymentError {
+    > 134 |   constructor(amount) {
+          |              ^
+      135 |     // Your code here
+      136 |   }
+      137 | }
+
+      at new FraudDetectedError (src/10-paytm-retry.js:134:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:44:19)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processPayment function › processPayment returns success for valid payment
+
+    TypeError: Cannot read properties of undefined (reading 'transactionId')
+
+      54 |     test('processPayment returns success for valid payment', async () => {
+      55 |       const result = await processPayment(100, 500, 'online');
+    > 56 |       expect(result.transactionId).toMatch(/^TXN/);
+         |                     ^
+      57 |       expect(result.amount).toBe(100);
+      58 |       expect(result.status).toBe('success');
+      59 |       expect(result).toHaveProperty('timestamp');
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:56:21)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processPayment function › processPayment throws PaymentError for invalid amount
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      65 |         expect(true).toBe(false); // should not reach here
+      66 |       } catch (e) {
+    > 67 |         expect(e instanceof PaymentError).toBe(true);
+         |                                           ^
+      68 |         expect(e.code).toBe('INVALID_AMOUNT');
+      69 |       }
+      70 |     });
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:67:43)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processPayment function › processPayment throws InsufficientFundsError when amount > balance
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      75 |         expect(true).toBe(false);
+      76 |       } catch (e) {
+    > 77 |         expect(e instanceof InsufficientFundsError).toBe(true);
+         |                                                     ^
+      78 |         expect(e.balance).toBe(100);
+      79 |       }
+      80 |     });
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:77:53)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processPayment function › processPayment throws NetworkError for offline status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      85 |         expect(true).toBe(false);
+      86 |       } catch (e) {
+    > 87 |         expect(e instanceof NetworkError).toBe(true);
+         |                                           ^
+      88 |         expect(e.retryable).toBe(true);
+      89 |       }
+      90 |     });
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:87:43)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processPayment function › processPayment throws FraudDetectedError for amount > 100000
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       95 |         expect(true).toBe(false);
+       96 |       } catch (e) {
+    >  97 |         expect(e instanceof FraudDetectedError).toBe(true);
+          |                                                 ^
+       98 |         expect(e.retryable).toBe(false);
+       99 |       }
+      100 |     });
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:97:49)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › retryPayment function › retryPayment succeeds on first try
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      108 |         50
+      109 |       );
+    > 110 |       expect(result.status).toBe('success');
+          |                     ^
+      111 |     });
+      112 |
+      113 |     test('retryPayment retries on NetworkError', async () => {
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:110:21)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › retryPayment function › retryPayment retries on NetworkError
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      119 |       };
+      120 |       const result = await retryPayment(fn, 3, 10);
+    > 121 |       expect(result.status).toBe('success');
+          |                     ^
+      122 |       expect(callCount).toBe(3);
+      123 |     });
+      124 |
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:121:21)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › retryPayment function › retryPayment does NOT retry on non-NetworkError
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      129 |         throw new FraudDetectedError(200000);
+      130 |       };
+    > 131 |       await expect(retryPayment(fn, 3, 10)).rejects.toThrow('Suspicious transaction detected');
+          |             ^
+      132 |       expect(callCount).toBe(1);
+      133 |     });
+      134 |
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:131:13)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › retryPayment function › retryPayment throws after all retries exhausted
+
+    expect(received).rejects.toThrow()
+
+    Received promise resolved instead of rejected
+    Resolved to value: undefined
+
+      137 |         throw new NetworkError(100);
+      138 |       };
+    > 139 |       await expect(retryPayment(fn, 2, 10)).rejects.toThrow('Network error during transaction');
+          |             ^
+      140 |     });
+      141 |   });
+      142 |
+
+      at expect (node_modules/expect/build/index.js:113:15)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:139:13)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processWithFallback function › processWithFallback returns primary result on success
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      147 |         () => processPayment(100, 500, 'online')
+      148 |       );
+    > 149 |       expect(result.status).toBe('success');
+          |                     ^
+      150 |     });
+      151 |
+      152 |     test('processWithFallback uses fallback when primary fails', async () => {
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:149:21)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processWithFallback function › processWithFallback uses fallback when primary fails
+
+    TypeError: Cannot read properties of undefined (reading 'status')
+
+      155 |         () => processPayment(100, 500, 'online')
+      156 |       );
+    > 157 |       expect(result.status).toBe('success');
+          |                     ^
+      158 |     });
+      159 |
+      160 |     test('processWithFallback throws PaymentError when both fail', async () => {
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:157:21)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › processWithFallback function › processWithFallback throws PaymentError when both fail
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      166 |         expect(true).toBe(false);
+      167 |       } catch (e) {
+    > 168 |         expect(e instanceof PaymentError).toBe(true);
+          |                                           ^
+      169 |         expect(e.code).toBe('BOTH_FAILED');
+      170 |       }
+      171 |     });
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:168:43)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › categorizeError function › categorizes InsufficientFundsError correctly
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      120 |
+      121 | export class InsufficientFundsError extends PaymentError {
+    > 122 |   constructor(amount, balance) {
+          |              ^
+      123 |     // Your code here
+      124 |   }
+      125 | }
+
+      at new InsufficientFundsError (src/10-paytm-retry.js:122:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:176:38)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › categorizeError function › categorizes NetworkError correctly
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      126 |
+      127 | export class NetworkError extends PaymentError {
+    > 128 |   constructor(amount) {
+          |              ^
+      129 |     // Your code here
+      130 |   }
+      131 | }
+
+      at new NetworkError (src/10-paytm-retry.js:128:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:185:38)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › categorizeError function › categorizes FraudDetectedError correctly
+
+    ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
+      132 |
+      133 | export class FraudDetectedError extends PaymentError {
+    > 134 |   constructor(amount) {
+          |              ^
+      135 |     // Your code here
+      136 |   }
+      137 | }
+
+      at new FraudDetectedError (src/10-paytm-retry.js:134:14)
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:194:38)
+
+  ● 10 - Paytm Retry: Custom Errors & Retry Logic (9 pts) › categorizeError function › categorizes unknown errors correctly
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: {"message": "Something happened", "retryable": false, "type": "unknown"}
+    Received: undefined
+
+      202 |     test('categorizes unknown errors correctly', () => {
+      203 |       const result = categorizeError(new Error('Something happened'));
+    > 204 |       expect(result).toEqual({
+          |                      ^
+      205 |         type: 'unknown',
+      206 |         retryable: false,
+      207 |         message: 'Something happened',
+
+      at Object.<anonymous> (tests/10-paytm-retry.spec.js:204:22)
+
+PASS tests/03-dabba-delivery.spec.js
+  03 - Dabba Delivery: ES6 Classes (8 pts)
+    Constructor and initial state
+      ✓ DabbaService initializes with correct serviceName and area (3 ms)
+      ✓ DabbaService is an instance of DabbaService class (1 ms)
+    addCustomer method
+      ✓ addCustomer creates customer with correct fields (2 ms)
+      ✓ addCustomer auto-increments ids (1 ms)
+      ✓ addCustomer returns null for invalid meal preference (1 ms)
+      ✓ addCustomer returns null for duplicate name (1 ms)
+    removeCustomer method
+      ✓ removeCustomer sets active to false and returns true
+      ✓ removeCustomer returns false for non-existent customer
+      ✓ removeCustomer returns false for already inactive customer (1 ms)
+    createDeliveryBatch method
+      ✓ createDeliveryBatch returns deliveries for active customers (2 ms)
+      ✓ createDeliveryBatch excludes inactive customers
+      ✓ createDeliveryBatch returns empty array if no active customers (1 ms)
+    markDelivered and getDailyReport
+      ✓ markDelivered returns true for active customer
+      ✓ markDelivered returns false for non-existent or inactive customer
+      ✓ getDailyReport returns correct counts for active customers (1 ms)
+      ✓ getDailyReport excludes inactive customers from all counts
+    getCustomer method
+      ✓ getCustomer returns customer object by name (1 ms)
+      ✓ getCustomer returns null for non-existent customer
+      ✓ getCustomer returns inactive customers too (1 ms)
+
+PASS tests/04-cricket-academy.spec.js
+  04 - Cricket Academy: Inheritance with extends & super (8 pts)
+    Player base class
+      ✓ Player constructor sets name, age, team and trainingHours = 0 (4 ms)
+      ✓ Player.getProfile returns correct profile object (1 ms)
+      ✓ Player.train adds hours and returns updated total
+      ✓ Player.train returns -1 for non-positive hours
+    Batsman class (extends Player)
+      ✓ Batsman is an instance of both Batsman and Player (1 ms)
+      ✓ playInnings records innings and returns innings object (1 ms)
+      ✓ playInnings returns null for invalid input (1 ms)
+      ✓ getStrikeRate returns average strike rate across innings (2 ms)
+      ✓ getStrikeRate returns 0 when no innings played (1 ms)
+      ✓ Batsman.getProfile overrides role to batsman and includes batting stats (1 ms)
+    Bowler class (extends Player)
+      ✓ Bowler is an instance of both Bowler and Player (12 ms)
+      ✓ bowlSpell records spell and returns spell object (1 ms)
+      ✓ bowlSpell returns null for invalid input (1 ms)
+      ✓ getEconomy returns average economy across spells
+      ✓ Bowler.getProfile overrides role to bowler and includes bowling stats (1 ms)
+    AllRounder class (extends Player)
+      ✓ AllRounder is an instance of AllRounder and Player (1 ms)
+      ✓ AllRounder can bat and bowl (1 ms)
+      ✓ AllRounder.getProfile has role allrounder with both batting and bowling stats (1 ms)
+      ✓ AllRounder getStrikeRate and getEconomy work correctly (1 ms)
+
+PASS tests/02-lassi-stand.spec.js
+  02 - Lassi Stand: Constructor Functions & Prototype (7 pts)
+    Constructor and initial properties
+      ✓ LassiStand creates instance with correct name and city (3 ms)
+      ✓ LassiStand starts with empty menu and orders (2 ms)
+      ✓ methods are on the prototype, not on the instance (1 ms)
+    addFlavor method
+      ✓ addFlavor adds a flavor and returns menu length (1 ms)
+      ✓ addFlavor rejects duplicate flavors with -1 (1 ms)
+      ✓ addFlavor rejects non-positive price with -1
+    takeOrder method
+      ✓ takeOrder creates order and returns auto-incremented id
+      ✓ takeOrder calculates correct total
+      ✓ takeOrder returns -1 for invalid flavor (1 ms)
+      ✓ takeOrder returns -1 for quantity <= 0
+    completeOrder and getRevenue
+      ✓ completeOrder marks order as completed and returns true
+      ✓ completeOrder returns false for non-existent order (1 ms)
+      ✓ completeOrder returns false for already completed order
+      ✓ getRevenue sums only completed order totals
+    getMenu returns a copy
+      ✓ getMenu returns array matching internal menu (1 ms)
+      ✓ modifying getMenu result does not affect internal menu (1 ms)
+    isLassiStand function
+      ✓ isLassiStand returns true for LassiStand instance
+      ✓ isLassiStand returns false for plain object
+
+PASS tests/01-samosa-wala.spec.js
+  01 - Samosa Wala: this Keyword Basics (7 pts)
+    Cart creation and properties
+      ✓ createSamosaCart returns object with correct owner and location (3 ms)
+      ✓ cart has correct menu with samosa, jalebi, kachori prices (1 ms)
+      ✓ cart starts with empty sales array (1 ms)
+    sellItem method
+      ✓ sellItem returns total price for valid item and quantity (1 ms)
+      ✓ sellItem pushes sale record to sales array
+      ✓ sellItem returns -1 for invalid item
+      ✓ sellItem returns -1 for quantity <= 0
+      ✓ sellItem handles multiple sales correctly
+    getDailySales method
+      ✓ getDailySales returns sum of all sale totals (1 ms)
+      ✓ getDailySales returns 0 when no sales
+    getPopularItem method
+      ✓ getPopularItem returns item with highest total quantity
+      ✓ getPopularItem returns null when no sales (1 ms)
+    moveTo and resetDay methods
+      ✓ moveTo updates location and returns correct string
+      ✓ resetDay clears sales and returns correct string
+    this context: demonstrateThisLoss and fixWithBind
+      ✓ demonstrateThisLoss returns an unbound function reference
+      ✓ fixWithBind returns a function that works correctly (1 ms)
+
+Test Suites: 7 failed, 5 passed, 12 total
+Tests:       127 failed, 94 passed, 221 total
+Snapshots:   0 total
+Time:        2.315 s
+Ran all test suites.
